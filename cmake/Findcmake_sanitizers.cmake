@@ -1,3 +1,7 @@
+# TODO
+# see https://github.com/arsenm/sanitizers-cmake
+# sanitizer_add_blacklist_file("blacklist.txt") # https://github.com/arsenm/sanitizers-cmake#build-targets-with-sanitizer-support
+
 # cmake utils
 
 find_package(cmake_helper_utils REQUIRED)
