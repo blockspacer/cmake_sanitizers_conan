@@ -13,10 +13,32 @@ function(add_ubsan_static_link TARGET)
   endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
 endfunction(add_ubsan_static_link)
 
-macro(add_ubsan_flags TARGET)
+macro(add_ubsan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
     UNDEFINED_SANITIZER=1
     UNDEFINED_BEHAVIOR_SANITIZER=1)
+  target_compile_options(${TARGET} PUBLIC
+    -DMEMORY_TOOL_REPLACES_ALLOCATOR=1
+    -D_FORTIFY_SOURCE=0
+    -DUNDEFINED_SANITIZER=1
+    -DUNDEFINED_BEHAVIOR_SANITIZER=1
+    -g -O0
+    -fPIC
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -fno-stack-protector
+    -fno-wrapv
+    -fsanitize=undefined
+    -fsanitize=float-divide-by-zero
+    -fsanitize=unsigned-integer-overflow
+    -fsanitize=implicit-conversion
+    -fsanitize=nullability-arg
+    -fsanitize=nullability-assign
+    -fsanitize=nullability-return
+    -fno-sanitize=vptr)
+endmacro(add_ubsan_definitions)
+
+macro(add_ubsan_flags)
 
   # TODO: use target_compile_options
   #target_link_libraries(MyTarget
@@ -27,10 +49,12 @@ macro(add_ubsan_flags TARGET)
   # https://github.com/google/sanitizers/issues/367
   # As a workaround, you may try building your code with "-fsanitize=undefined -fno-sanitize=vptr"
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
+    -D_FORTIFY_SOURCE=0 \
     -DUNDEFINED_SANITIZER=1 \
     -DUNDEFINED_BEHAVIOR_SANITIZER=1 \
     -g -O0 \
@@ -48,12 +72,14 @@ macro(add_ubsan_flags TARGET)
     -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_CXX_FLAGS
     "${CMAKE_CXX_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DUNDEFINED_SANITIZER=1 \
     -DUNDEFINED_BEHAVIOR_SANITIZER=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fno-optimize-sibling-calls \
@@ -93,20 +119,35 @@ function(add_asan_static_link TARGET)
   endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
 endfunction(add_asan_static_link)
 
-macro(add_asan_flags TARGET)
+macro(add_asan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
     ADDRESS_SANITIZER=1)
+  target_compile_options(${TARGET} PUBLIC
+    -DMEMORY_TOOL_REPLACES_ALLOCATOR=1
+    -DADDRESS_SANITIZER=1
+    -D_FORTIFY_SOURCE=0
+    -g -O0
+    -fPIC
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -fno-stack-protector
+    -fsanitize-address-use-after-scope
+    -fsanitize=address)
+endmacro(add_asan_definitions)
 
+macro(add_asan_flags)
   # TODO: use target_compile_options
   #target_link_libraries(MyTarget
   #  -fsanitize=...
   #)
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DADDRESS_SANITIZER=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fno-optimize-sibling-calls \
@@ -115,11 +156,13 @@ macro(add_asan_flags TARGET)
     -fsanitize-address-use-after-scope \
     -fsanitize=address")
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_CXX_FLAGS
     "${CMAKE_CXX_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DADDRESS_SANITIZER=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fno-optimize-sibling-calls \
@@ -145,21 +188,37 @@ function(add_tsan_static_link TARGET)
   endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
 endfunction(add_tsan_static_link)
 
-macro(add_tsan_flags TARGET)
+macro(add_tsan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
     THREAD_SANITIZER=1)
+  target_compile_options(${TARGET} PUBLIC
+    -DMEMORY_TOOL_REPLACES_ALLOCATOR=1
+    -DTHREAD_SANITIZER=1
+    -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1
+    -D_FORTIFY_SOURCE=0
+    -g -O0
+    -fPIC
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -fno-stack-protector
+    -fsanitize=thread)
+endmacro(add_tsan_definitions)
+
+macro(add_tsan_flags)
 
   # TODO: use target_compile_options
   #target_link_libraries(MyTarget
   #  -fsanitize=...
   #)
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DTHREAD_SANITIZER=1 \
     -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fno-optimize-sibling-calls \
@@ -167,12 +226,14 @@ macro(add_tsan_flags TARGET)
     -fno-stack-protector \
     -fsanitize=thread")
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_CXX_FLAGS
     "${CMAKE_CXX_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DTHREAD_SANITIZER=1 \
     -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fno-optimize-sibling-calls \
@@ -196,10 +257,26 @@ function(add_msan_static_link TARGET)
   endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
 endfunction(add_msan_static_link)
 
-macro(add_msan_flags TARGET)
+macro(add_msan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
     MEMORY_SANITIZER=1)
+  target_compile_options(${TARGET} PUBLIC
+    -DMEMORY_TOOL_REPLACES_ALLOCATOR=1
+    -DMEMORY_SANITIZER=1
+    -D_FORTIFY_SOURCE=0
+    -g -O0
+    -fPIC
+    -fPIE
+    -fno-elide-constructors
+    -fno-optimize-sibling-calls
+    -fno-omit-frame-pointer
+    -fno-stack-protector
+    -fsanitize-memory-track-origins=2
+    -fsanitize-memory-use-after-dtor
+    -fsanitize=memory)
+endmacro(add_msan_definitions)
 
+macro(add_msan_flags)
   # TODO: use target_compile_options
   #target_link_libraries(MyTarget
   #  -fsanitize=...
@@ -211,11 +288,13 @@ macro(add_msan_flags TARGET)
   # NOTE: -fsanitize-memory-use-after-dtor
   # requires MSAN_OPTIONS=poison_in_dtor=1
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_C_FLAGS
     "${CMAKE_C_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DMEMORY_SANITIZER=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fPIE \
@@ -227,11 +306,13 @@ macro(add_msan_flags TARGET)
     -fsanitize-memory-use-after-dtor \
     -fsanitize=memory")
 
+  # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_CXX_FLAGS
     "${CMAKE_CXX_FLAGS} \
     -DMEMORY_TOOL_REPLACES_ALLOCATOR=1 \
     -DMEMORY_SANITIZER=1 \
+    -D_FORTIFY_SOURCE=0 \
     -g -O0 \
     -fPIC \
     -fPIE \
@@ -324,25 +405,33 @@ function(check_sanitizer_options)
 
   if(${ENABLE_UBSAN})
     if("$ENV{UBSAN_OPTIONS}" STREQUAL "")
-      message(FATAL_ERROR "you must set env. var. with UBSAN_OPTIONS")
+      message(FATAL_ERROR "you must set env. var. with UBSAN_OPTIONS. Example: \
+      export UBSAN_OPTIONS=\"fast_unwind_on_malloc=0:handle_segv=0:disable_coredump=0:halt_on_error=1:print_stacktrace=1\" \
+      ")
     endif()
   endif(${ENABLE_UBSAN})
 
   if(${ENABLE_ASAN})
     if("$ENV{ASAN_OPTIONS}" STREQUAL "")
-      message(FATAL_ERROR "you must set env. var. with ASAN_OPTIONS")
+      message(FATAL_ERROR "you must set env. var. with ASAN_OPTIONS. Example: \
+      export ASAN_OPTIONS=\"fast_unwind_on_malloc=0:strict_init_order=1:check_initialization_order=true:symbolize=1:handle_segv=0:detect_leaks=1:detect_stack_use_after_return=1:disable_coredump=0:abort_on_error=1\" \
+      ")
     endif()
   endif(${ENABLE_ASAN})
 
   if(${ENABLE_MSAN})
     if("$ENV{MSAN_OPTIONS}" STREQUAL "")
-      message(FATAL_ERROR "you must set env. var. with MSAN_OPTIONS")
+      message(FATAL_ERROR "you must set env. var. with MSAN_OPTIONS. Example: \
+      export MSAN_OPTIONS=\"poison_in_dtor=1:fast_unwind_on_malloc=0:check_initialization_order=true:handle_segv=0:detect_leaks=1:detect_stack_use_after_return=1:disable_coredump=0:abort_on_error=1\" \
+      ")
     endif()
   endif(${ENABLE_MSAN})
 
   if(${ENABLE_TSAN})
     if("$ENV{TSAN_OPTIONS}" STREQUAL "")
-      message(FATAL_ERROR "you must set env. var. with TSAN_OPTIONS")
+      message(FATAL_ERROR "you must set env. var. with TSAN_OPTIONS. Example: \
+      export TSAN_OPTIONS=\"handle_segv=0:disable_coredump=0:abort_on_error=1:report_thread_leaks=0\" \
+      ")
     endif()
   endif(${ENABLE_TSAN})
 
