@@ -95,6 +95,21 @@ macro(add_ubsan_flags)
     -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 
+  set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
+    -fPIC \
+    -fno-optimize-sibling-calls \
+    -fno-omit-frame-pointer \
+    -fno-stack-protector \
+    -fno-wrapv \
+    -fsanitize=undefined \
+    -fsanitize=float-divide-by-zero \
+    -fsanitize=unsigned-integer-overflow \
+    -fsanitize=implicit-conversion \
+    -fsanitize=nullability-arg \
+    -fsanitize=nullability-assign \
+    -fsanitize=nullability-return \
+    -fno-sanitize=vptr")
+
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
     "${CMAKE_LINKER_FLAGS} \
@@ -171,6 +186,14 @@ macro(add_asan_flags)
     -fsanitize-address-use-after-scope \
     -fsanitize=address")
 
+  set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
+    -fPIC \
+    -fno-optimize-sibling-calls \
+    -fno-omit-frame-pointer \
+    -fno-stack-protector \
+    -fsanitize-address-use-after-scope \
+    -fsanitize=address")
+
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
     "${CMAKE_LINKER_FLAGS} \
@@ -235,6 +258,13 @@ macro(add_tsan_flags)
     -DDYNAMIC_ANNOTATIONS_EXTERNAL_IMPL=1 \
     -D_FORTIFY_SOURCE=0 \
     -g -O0 \
+    -fPIC \
+    -fno-optimize-sibling-calls \
+    -fno-omit-frame-pointer \
+    -fno-stack-protector \
+    -fsanitize=thread")
+
+  set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
@@ -314,6 +344,17 @@ macro(add_msan_flags)
     -DMEMORY_SANITIZER=1 \
     -D_FORTIFY_SOURCE=0 \
     -g -O0 \
+    -fPIC \
+    -fPIE \
+    -fno-elide-constructors \
+    -fno-optimize-sibling-calls \
+    -fno-omit-frame-pointer \
+    -fno-stack-protector \
+    -fsanitize-memory-track-origins=2 \
+    -fsanitize-memory-use-after-dtor \
+    -fsanitize=memory")
+
+  set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
     -fPIE \
     -fno-elide-constructors \
