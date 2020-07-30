@@ -13,6 +13,9 @@ function(add_ubsan_static_link TARGET)
   endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
 endfunction(add_ubsan_static_link)
 
+# TODO
+#-fsanitize=unsigned-integer-overflow
+
 macro(add_ubsan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
     UNDEFINED_SANITIZER=1
@@ -28,9 +31,8 @@ macro(add_ubsan_definitions TARGET)
     -fno-omit-frame-pointer
     -fno-stack-protector
     -fno-wrapv
-    -fsanitize=undefined
+    -fsanitize=address,undefined
     -fsanitize=float-divide-by-zero
-    -fsanitize=unsigned-integer-overflow
     -fsanitize=implicit-conversion
     -fsanitize=nullability-arg
     -fsanitize=nullability-assign
@@ -49,6 +51,9 @@ macro(add_ubsan_flags)
   # https://github.com/google/sanitizers/issues/367
   # As a workaround, you may try building your code with "-fsanitize=undefined -fno-sanitize=vptr"
 
+  # TODO:
+  #  -fsanitize=unsigned-integer-overflow \
+
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
   set(CMAKE_C_FLAGS
@@ -63,14 +68,16 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
-    -fsanitize=undefined \
+    -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=unsigned-integer-overflow \
     -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
     -fno-sanitize=vptr")
+
+  # TODO:
+  #  -fsanitize=unsigned-integer-overflow \
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -86,14 +93,16 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
-    -fsanitize=undefined \
+    -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=unsigned-integer-overflow \
     -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
     -fno-sanitize=vptr")
+
+  # TODO:
+  #  -fsanitize=unsigned-integer-overflow \
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
@@ -101,14 +110,16 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
-    -fsanitize=undefined \
+    -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=unsigned-integer-overflow \
     -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
     -fno-sanitize=vptr")
+
+  # TODO:
+  #  -fsanitize=unsigned-integer-overflow \
 
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
@@ -116,9 +127,8 @@ macro(add_ubsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
-    -fsanitize=undefined \
+    -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=unsigned-integer-overflow \
     -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
@@ -147,7 +157,7 @@ macro(add_asan_definitions TARGET)
     -fno-omit-frame-pointer
     -fno-stack-protector
     -fsanitize-address-use-after-scope
-    -fsanitize=address)
+    -fsanitize=address,undefined)
 endmacro(add_asan_definitions)
 
 macro(add_asan_flags)
@@ -169,7 +179,7 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
-    -fsanitize=address")
+    -fsanitize=address,undefined")
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -184,7 +194,7 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
-    -fsanitize=address")
+    -fsanitize=address,undefined")
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
@@ -192,7 +202,7 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
-    -fsanitize=address")
+    -fsanitize=address,undefined")
 
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
@@ -201,7 +211,7 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope=1 \
-    -fsanitize=address")
+    -fsanitize=address,undefined")
 endmacro(add_ubsan_flags)
 
 # \param:TARGET TARGET specify the target to be linked against.
