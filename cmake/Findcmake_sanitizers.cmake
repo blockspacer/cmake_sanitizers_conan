@@ -8,9 +8,7 @@ find_package(cmake_helper_utils REQUIRED)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_ubsan_static_link TARGET)
-  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    target_link_libraries(${TARGET} "-static-libubsan")
-  endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
+  target_link_libraries(${TARGET} "-static-libubsan")
 endfunction(add_ubsan_static_link)
 
 # TODO
@@ -32,6 +30,8 @@ macro(add_ubsan_definitions TARGET)
     -fno-omit-frame-pointer
     -fno-stack-protector
     -fno-wrapv
+    -fno-sanitize-recover=all
+    -fsanitize-recover=unsigned-integer-overflow
     -fsanitize=address,undefined
     -fsanitize=float-divide-by-zero
     -fsanitize=nullability-arg
@@ -69,6 +69,8 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
     -fsanitize=nullability-arg \
@@ -94,6 +96,8 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
     -fsanitize=nullability-arg \
@@ -111,6 +115,8 @@ macro(add_ubsan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fno-wrapv \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
     -fsanitize=nullability-arg \
@@ -128,6 +134,8 @@ macro(add_ubsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
     -fsanitize=nullability-arg \
@@ -138,10 +146,8 @@ endmacro(add_ubsan_flags)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_asan_static_link TARGET)
-  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    # see https://github.com/google/sanitizers/wiki/AddressSanitizer#using-addresssanitizer
-    target_link_libraries(${TARGET} "-static-libasan")
-  endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
+  # see https://github.com/google/sanitizers/wiki/AddressSanitizer#using-addresssanitizer
+  target_link_libraries(${TARGET} "-static-libasan")
 endfunction(add_asan_static_link)
 
 macro(add_asan_definitions TARGET)
@@ -157,6 +163,8 @@ macro(add_asan_definitions TARGET)
     -fno-omit-frame-pointer
     -fno-stack-protector
     -fsanitize-address-use-after-scope
+    -fno-sanitize-recover=all
+    -fsanitize-recover=unsigned-integer-overflow
     -fsanitize=address,undefined)
 endmacro(add_asan_definitions)
 
@@ -179,6 +187,8 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined")
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
@@ -194,6 +204,8 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined")
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
@@ -202,6 +214,8 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined")
 
   # Set linker flags
@@ -211,14 +225,14 @@ macro(add_asan_flags)
     -fno-omit-frame-pointer \
     -fno-stack-protector \
     -fsanitize-address-use-after-scope=1 \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined")
-endmacro(add_ubsan_flags)
+endmacro(add_asan_flags)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_tsan_static_link TARGET)
-  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    target_link_libraries(${TARGET} "-static-libtsan")
-  endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
+  target_link_libraries(${TARGET} "-static-libtsan")
 endfunction(add_tsan_static_link)
 
 macro(add_tsan_definitions TARGET)
@@ -234,6 +248,8 @@ macro(add_tsan_definitions TARGET)
     -fno-optimize-sibling-calls
     -fno-omit-frame-pointer
     -fno-stack-protector
+    -fno-sanitize-recover=all
+    -fsanitize-recover=unsigned-integer-overflow
     -fsanitize=thread)
 endmacro(add_tsan_definitions)
 
@@ -257,6 +273,8 @@ macro(add_tsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=thread")
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
@@ -272,6 +290,8 @@ macro(add_tsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=thread")
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
@@ -279,6 +299,8 @@ macro(add_tsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=thread")
 
   # Set linker flags
@@ -287,14 +309,16 @@ macro(add_tsan_flags)
     -fno-optimize-sibling-calls \
     -fno-omit-frame-pointer \
     -fno-stack-protector \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=thread")
 endmacro(add_tsan_flags)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_msan_static_link TARGET)
-  if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
-    target_link_libraries(${TARGET} "-static-libmsan")
-  endif(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
+  # NOTE: Static linking is not supported.
+  # see https://clang.llvm.org/docs/MemorySanitizer.html
+  #target_link_libraries(${TARGET} "-static-libmsan")
 endfunction(add_msan_static_link)
 
 macro(add_msan_definitions TARGET)
@@ -313,6 +337,8 @@ macro(add_msan_definitions TARGET)
     -fno-stack-protector
     -fsanitize-memory-track-origins=2
     -fsanitize-memory-use-after-dtor
+    -fno-sanitize-recover=all
+    -fsanitize-recover=unsigned-integer-overflow
     -fsanitize=memory)
 endmacro(add_msan_definitions)
 
@@ -344,6 +370,8 @@ macro(add_msan_flags)
     -fno-stack-protector \
     -fsanitize-memory-track-origins=2 \
     -fsanitize-memory-use-after-dtor \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=memory")
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
@@ -362,6 +390,8 @@ macro(add_msan_flags)
     -fno-stack-protector \
     -fsanitize-memory-track-origins=2 \
     -fsanitize-memory-use-after-dtor \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=memory")
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
@@ -373,6 +403,8 @@ macro(add_msan_flags)
     -fno-stack-protector \
     -fsanitize-memory-track-origins=2 \
     -fsanitize-memory-use-after-dtor \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=memory")
 
   # Set linker flags
@@ -384,6 +416,8 @@ macro(add_msan_flags)
     -fno-stack-protector \
     -fsanitize-memory-track-origins=2 \
     -fsanitize-memory-use-after-dtor \
+    -fno-sanitize-recover=all \
+    -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=memory")
 endmacro(add_msan_flags)
 
