@@ -15,6 +15,7 @@ endfunction(add_ubsan_static_link)
 
 # TODO
 #-fsanitize=unsigned-integer-overflow
+#-fsanitize=implicit-conversion
 
 macro(add_ubsan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
@@ -33,7 +34,6 @@ macro(add_ubsan_definitions TARGET)
     -fno-wrapv
     -fsanitize=address,undefined
     -fsanitize=float-divide-by-zero
-    -fsanitize=implicit-conversion
     -fsanitize=nullability-arg
     -fsanitize=nullability-assign
     -fsanitize=nullability-return
@@ -53,6 +53,7 @@ macro(add_ubsan_flags)
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
+  #  -fsanitize=implicit-conversion \
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -70,7 +71,6 @@ macro(add_ubsan_flags)
     -fno-wrapv \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
@@ -78,6 +78,7 @@ macro(add_ubsan_flags)
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
+  #  -fsanitize=implicit-conversion \
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -95,7 +96,6 @@ macro(add_ubsan_flags)
     -fno-wrapv \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
@@ -103,6 +103,7 @@ macro(add_ubsan_flags)
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
+  #  -fsanitize=implicit-conversion \
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
@@ -112,7 +113,6 @@ macro(add_ubsan_flags)
     -fno-wrapv \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
@@ -120,6 +120,7 @@ macro(add_ubsan_flags)
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
+  #  -fsanitize=implicit-conversion \
 
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
@@ -129,7 +130,6 @@ macro(add_ubsan_flags)
     -fno-stack-protector \
     -fsanitize=address,undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=implicit-conversion \
     -fsanitize=nullability-arg \
     -fsanitize=nullability-assign \
     -fsanitize=nullability-return \
