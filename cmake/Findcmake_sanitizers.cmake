@@ -8,7 +8,9 @@ find_package(cmake_helper_utils REQUIRED)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_ubsan_static_link TARGET)
-  target_link_libraries(${TARGET} "-static-libubsan")
+  # TODO: unknown argument: '-static-libubsan'
+  # TODO: use target_link_options for "-static-*"?
+  ##target_link_libraries(${TARGET} PUBLIC "-static-libubsan")
 endfunction(add_ubsan_static_link)
 
 # TODO
@@ -43,7 +45,7 @@ endmacro(add_ubsan_definitions)
 macro(add_ubsan_flags)
 
   # TODO: use target_compile_options
-  #target_link_libraries(MyTarget
+  #target_link_libraries(MyTarget PUBLIC
   #  -fsanitize=...
   #)
 
@@ -147,7 +149,8 @@ endmacro(add_ubsan_flags)
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_asan_static_link TARGET)
   # see https://github.com/google/sanitizers/wiki/AddressSanitizer#using-addresssanitizer
-  target_link_libraries(${TARGET} "-static-libasan")
+  # TODO: use target_link_options for "-static-*"?
+  target_link_libraries(${TARGET} PUBLIC "-static-libasan")
 endfunction(add_asan_static_link)
 
 macro(add_asan_definitions TARGET)
@@ -170,7 +173,7 @@ endmacro(add_asan_definitions)
 
 macro(add_asan_flags)
   # TODO: use target_compile_options
-  #target_link_libraries(MyTarget
+  #target_link_libraries(MyTarget PUBLIC
   #  -fsanitize=...
   #)
 
@@ -232,7 +235,8 @@ endmacro(add_asan_flags)
 
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_tsan_static_link TARGET)
-  target_link_libraries(${TARGET} "-static-libtsan")
+  # TODO: use target_link_options for "-static-*"?
+  target_link_libraries(${TARGET} PUBLIC "-static-libtsan")
 endfunction(add_tsan_static_link)
 
 macro(add_tsan_definitions TARGET)
@@ -256,7 +260,7 @@ endmacro(add_tsan_definitions)
 macro(add_tsan_flags)
 
   # TODO: use target_compile_options
-  #target_link_libraries(MyTarget
+  #target_link_libraries(MyTarget PUBLIC
   #  -fsanitize=...
   #)
 
@@ -318,7 +322,8 @@ endmacro(add_tsan_flags)
 function(add_msan_static_link TARGET)
   # NOTE: Static linking is not supported.
   # see https://clang.llvm.org/docs/MemorySanitizer.html
-  #target_link_libraries(${TARGET} "-static-libmsan")
+  # TODO: use target_link_options for "-static-*"?
+  #target_link_libraries(${TARGET} PUBLIC "-static-libmsan")
 endfunction(add_msan_static_link)
 
 macro(add_msan_definitions TARGET)
@@ -344,7 +349,7 @@ endmacro(add_msan_definitions)
 
 macro(add_msan_flags)
   # TODO: use target_compile_options
-  #target_link_libraries(MyTarget
+  #target_link_libraries(MyTarget PUBLIC
   #  -fsanitize=...
   #)
 
