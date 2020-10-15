@@ -150,7 +150,7 @@ endmacro(add_ubsan_flags)
 function(add_asan_static_link TARGET)
   # see https://github.com/google/sanitizers/wiki/AddressSanitizer#using-addresssanitizer
   # TODO: use target_link_options for "-static-*"?
-  target_link_libraries(${TARGET} PUBLIC "-static-libasan")
+  #target_link_libraries(${TARGET} PUBLIC "-static-libasan")
 endfunction(add_asan_static_link)
 
 macro(add_asan_definitions TARGET)
@@ -236,7 +236,8 @@ endmacro(add_asan_flags)
 # \param:TARGET TARGET specify the target to be linked against.
 function(add_tsan_static_link TARGET)
   # TODO: use target_link_options for "-static-*"?
-  target_link_libraries(${TARGET} PUBLIC "-static-libtsan")
+  # TODO: unknown argument '-static-libtsan'
+  #target_link_libraries(${TARGET} PUBLIC "-static-libtsan")
 endfunction(add_tsan_static_link)
 
 macro(add_tsan_definitions TARGET)
