@@ -16,6 +16,26 @@ endfunction(add_ubsan_static_link)
 # TODO
 #-fsanitize=unsigned-integer-overflow
 #-fsanitize=implicit-conversion
+# TODO
+#
+#~/.conan/data/corrade/v2020.06/conan/stable/build/#a588aedb50aa745a2698801b1f638aec5f70dbcd/src/Corrade/Containers/#GrowableArray.h:943:22: runtime error: null pointer passed as argument 2, which is #declared to never be null
+#/usr/include/string.h:43:28: note: nonnull attribute specified here
+#SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ~/.conan/data/#corrade/v2020.06/conan/stable/build/a588aedb50aa745a2698801b1f638aec5f70dbcd/src/#Corrade/Containers/GrowableArray.h:943:22 in
+#~/.conan/data/corrade/v2020.06/conan/stable/build/#a588aedb50aa745a2698801b1f638aec5f70dbcd/src/Corrade/Containers/#GrowableArray.h:943:22: runtime error: null pointer passed as argument 2, which is #declared to never be null
+#/usr/include/string.h:43:28: note: nonnull attribute specified here
+#SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ~/.conan/data/#corrade/v2020.06/conan/stable/build/a588aedb50aa745a2698801b1f638aec5f70dbcd/src/#Corrade/Containers/GrowableArray.h:943:22 in
+#~/.conan/data/corrade/v2020.06/conan/stable/build/#a588aedb50aa745a2698801b1f638aec5f70dbcd/src/Corrade/Containers/#GrowableArray.h:943:22: runtime error: null pointer passed as argument 2, which is #declared to never be null
+#/usr/include/string.h:43:28: note: nonnull attribute specified here
+#SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ~/.conan/data/#corrade/v2020.06/conan/stable/build/a588aedb50aa745a2698801b1f638aec5f70dbcd/src/#Corrade/Containers/GrowableArray.h:943:22 in
+#~/.conan/data/corrade/v2020.06/conan/stable/build/#a588aedb50aa745a2698801b1f638aec5f70dbcd/src/Corrade/Containers/#GrowableArray.h:943:22: runtime error: null pointer passed as argument 2, which is #declared to never be null
+#/usr/include/string.h:43:28: note: nonnull attribute specified here
+#SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ~/.conan/data/#corrade/v2020.06/conan/stable/build/a588aedb50aa745a2698801b1f638aec5f70dbcd/src/#Corrade/Containers/GrowableArray.h:943:22 in
+#~/.conan/data/corrade/v2020.06/conan/stable/build/#a588aedb50aa745a2698801b1f638aec5f70dbcd/src/Corrade/Containers/#GrowableArray.h:943:22: runtime error: null pointer passed as argument 2, which is #declared to never be null
+#/usr/include/string.h:43:28: note: nonnull attribute specified here
+#SUMMARY: UndefinedBehaviorSanitizer: undefined-behavior ~/.conan/data/#corrade/v2020.06/conan/stable/build/a588aedb50aa745a2698801b1f638aec5f70dbcd/src/#Corrade/Containers/GrowableArray.h:943:22 in
+#    -fsanitize=nullability-arg
+#    -fsanitize=nullability-assign
+#    -fsanitize=nullability-return
 
 macro(add_ubsan_definitions TARGET)
   target_compile_definitions(${TARGET} PUBLIC
@@ -35,10 +55,11 @@ macro(add_ubsan_definitions TARGET)
     -fno-sanitize-recover=all
     -fsanitize-recover=unsigned-integer-overflow
     -fsanitize=address,undefined
+    -fno-sanitize=nullability-arg
+    -fno-sanitize=nullability-assign
+    -fno-sanitize=nullability-return
+    -fsanitize-trap=undefined
     -fsanitize=float-divide-by-zero
-    -fsanitize=nullability-arg
-    -fsanitize=nullability-assign
-    -fsanitize=nullability-return
     -fno-sanitize=vptr)
 endmacro(add_ubsan_definitions)
 
@@ -56,6 +77,10 @@ macro(add_ubsan_flags)
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
   #  -fsanitize=implicit-conversion \
+  # TODO:
+  # -fsanitize=nullability-arg \
+  # -fsanitize=nullability-assign \
+  # -fsanitize=nullability-return \
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -74,15 +99,20 @@ macro(add_ubsan_flags)
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
+    -fsanitize-trap=undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=nullability-arg \
-    -fsanitize=nullability-assign \
-    -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
   #  -fsanitize=implicit-conversion \
+  # TODO:
+  # -fsanitize=nullability-arg \
+  # -fsanitize=nullability-assign \
+  # -fsanitize=nullability-return \
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
   # Set compiler flags
@@ -101,15 +131,20 @@ macro(add_ubsan_flags)
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
+    -fsanitize-trap=undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=nullability-arg \
-    -fsanitize=nullability-assign \
-    -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
   #  -fsanitize=implicit-conversion \
+  # TODO:
+  # -fsanitize=nullability-arg \
+  # -fsanitize=nullability-assign \
+  # -fsanitize=nullability-return \
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
     -fPIC \
@@ -120,15 +155,20 @@ macro(add_ubsan_flags)
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
+    -fsanitize-trap=undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=nullability-arg \
-    -fsanitize=nullability-assign \
-    -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 
   # TODO:
   #  -fsanitize=unsigned-integer-overflow \
   #  -fsanitize=implicit-conversion \
+  # TODO:
+  # -fsanitize=nullability-arg \
+  # -fsanitize=nullability-assign \
+  # -fsanitize=nullability-return \
 
   # Set linker flags
   set(CMAKE_LINKER_FLAGS
@@ -139,10 +179,11 @@ macro(add_ubsan_flags)
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
     -fsanitize=address,undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
+    -fsanitize-trap=undefined \
     -fsanitize=float-divide-by-zero \
-    -fsanitize=nullability-arg \
-    -fsanitize=nullability-assign \
-    -fsanitize=nullability-return \
     -fno-sanitize=vptr")
 endmacro(add_ubsan_flags)
 
@@ -168,7 +209,11 @@ macro(add_asan_definitions TARGET)
     -fsanitize-address-use-after-scope
     -fno-sanitize-recover=all
     -fsanitize-recover=unsigned-integer-overflow
-    -fsanitize=address,undefined)
+    -fsanitize=address,undefined
+    -fno-sanitize=nullability-arg
+    -fno-sanitize=nullability-assign
+    -fno-sanitize=nullability-return
+    -fsanitize-trap=undefined)
 endmacro(add_asan_definitions)
 
 macro(add_asan_flags)
@@ -192,6 +237,10 @@ macro(add_asan_flags)
     -fsanitize-address-use-after-scope \
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
+    -fsanitize-trap=undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
     -fsanitize=address,undefined")
 
   # -D_FORTIFY_SOURCE=0 (sanitizer doesn't support source fortification, so disable it to avoid false warnings)
@@ -209,6 +258,10 @@ macro(add_asan_flags)
     -fsanitize-address-use-after-scope \
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
+    -fsanitize-trap=undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
     -fsanitize=address,undefined")
 
   set(CMAKE_REQUIRED_FLAGS "${OLD_CMAKE_REQUIRED_FLAGS} \
@@ -219,6 +272,10 @@ macro(add_asan_flags)
     -fsanitize-address-use-after-scope \
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
+    -fsanitize-trap=undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
     -fsanitize=address,undefined")
 
   # Set linker flags
@@ -230,6 +287,10 @@ macro(add_asan_flags)
     -fsanitize-address-use-after-scope=1 \
     -fno-sanitize-recover=all \
     -fsanitize-recover=unsigned-integer-overflow \
+    -fsanitize-trap=undefined \
+    -fno-sanitize=nullability-arg \
+    -fno-sanitize=nullability-assign \
+    -fno-sanitize=nullability-return \
     -fsanitize=address,undefined")
 endmacro(add_asan_flags)
 
